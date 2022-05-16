@@ -16,6 +16,7 @@ import Alert from "@mui/material/Alert";
 
 import CustomAppBar from "../components/AppBar";
 import { API_BACKEND, axios as http } from "../apiService";
+import useToken from "../hooks/useToken";
 
 export default function Dashboard() {
   const [coworker, setCoworker] = useState("");
@@ -30,6 +31,7 @@ export default function Dashboard() {
     organization: { name: "" },
     kudos_counter: 0,
   });
+  const { removeToken } = useToken();
 
   const handleCoworkerChange = (event) => {
     setCoworker(event.target.value);
@@ -41,12 +43,9 @@ export default function Dashboard() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const data = await http.post(
-        API_BACKEND + `api/v1/kudos/give/${coworker}/`,
-        {
-          message,
-        }
-      );
+      await http.post(API_BACKEND + `api/v1/kudos/give/${coworker}/`, {
+        message,
+      });
       setOpen(true);
       setCoworker("");
       setMessage("");
@@ -67,17 +66,21 @@ export default function Dashboard() {
 
   useEffect(() => {
     (async () => {
-      const coworkersData = await http.get(
-        API_BACKEND + "api/v1/users/organization/"
-      );
-      setCoworkers(coworkersData.data);
+      try {
+        const coworkersData = await http.get(
+          API_BACKEND + "api/v1/users/organization/"
+        );
+        setCoworkers(coworkersData.data);
+      } catch (error) {
+        removeToken();
+      }
     })();
 
     (async () => {
       const user = await http.get(API_BACKEND + "api/v1/users/profile/");
       setUser(user.data);
     })();
-  }, []);
+  }, [removeToken]);
 
   return (
     <>

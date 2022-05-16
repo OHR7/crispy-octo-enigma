@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,8 +6,6 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useNavigate } from "react-router-dom";
-
-import { API_BACKEND, axios as http } from "../apiService";
 import useToken from "../hooks/useToken";
 
 export default function CustomAppBar({ user }) {
@@ -19,6 +16,8 @@ export default function CustomAppBar({ user }) {
     removeToken();
     navigate("/login", { replace: true });
   };
+
+  console.log(user);
 
   return (
     <>

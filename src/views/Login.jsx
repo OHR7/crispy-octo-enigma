@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
-import { API_BACKEND, axios as http } from "../apiService";
+import { API_BACKEND } from "../apiService";
 import axios from "axios";
 
 import logoImg from "../assets/1.png";
