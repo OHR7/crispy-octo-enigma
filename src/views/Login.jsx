@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import TokenContext from "../TokenContext";
 
 import Button from "@mui/material/Button";
@@ -6,39 +7,39 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
-import { API_BACKEND, http } from "../apiService";
+import { API_BACKEND, axios as http } from "../apiService";
+import axios from "axios";
 
 import logoImg from "../assets/1.png";
 
 export default function LogIn() {
-  const { token } = useContext(TokenContext);
+  const navigate = useNavigate();
+  const instance = axios.create({
+    baseURL: API_BACKEND,
+  });
+
+  const { setToken } = useContext(TokenContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const formData = new FormData(event.currentTarget);
 
     try {
-      await http.get(API_BACKEND + "/v1/candidates");
+      const data = await instance.post(API_BACKEND + "api/v1/auth/", {
+        username: formData.get("username"),
+        password: formData.get("password"),
+      });
+      console.log(data);
+      setToken(
+        {
+          token: data.data.token,
+        },
+        navigate("/", { replace: true })
+      );
     } catch (error) {
       console.log(error);
     }
-
-    // axios
-    //   .post("https://localhost:8000/api/v1/auth/", { email, password })
-    //   .then(({ data }) => {
-    //     setToken({
-    //       token: data.token,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     alert("An error occurred, please try again later.");
-    //   });
   };
 
   return (

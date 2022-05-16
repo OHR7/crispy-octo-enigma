@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./views/Dashboard";
+import Kudos from "./views/Kudos";
 import Login from "./views/Login";
 import TokenContext from "./TokenContext";
 import useToken from "./hooks/useToken";
@@ -20,15 +21,24 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            key="tas01"
+            key="home"
             path="/"
             element={
-              <PrivateRoute>
+              <PrivateRoute token={token}>
                 <Dashboard />
               </PrivateRoute>
             }
           />
-          <Route key="tas02" path="/login" element={<Login />} />
+          <Route
+            key="kudos"
+            path="/my-kudos"
+            element={
+              <PrivateRoute token={token}>
+                <Kudos />
+              </PrivateRoute>
+            }
+          />
+          <Route key="login" path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </TokenContext.Provider>

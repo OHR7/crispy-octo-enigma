@@ -1,13 +1,15 @@
 import axios from "axios";
 
-export const API_BACKEND = "http://localhost:4000";
+export const API_BACKEND = "http://localhost:8000/";
 
 axios.interceptors.request.use(
   (config) => {
     const tokenString = localStorage.getItem("token");
     if (!tokenString) return Promise.reject();
 
-    config.headers["Authorization"] = `Token ${tokenString}`;
+    const token = JSON.parse(tokenString);
+
+    config.headers["Authorization"] = `Token ${token.token}`;
     return config;
   },
   (error) => {
@@ -26,5 +28,4 @@ axios.interceptors.response.use(
 
 axios.defaults.headers.common["Content-Type"] = "application/json";
 
-export const http = axios.create();
-
+export { axios };
