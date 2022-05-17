@@ -21,6 +21,15 @@ Fire up the server!
 
 ```npm start```
 
+### Login Info
+Example User 
+
+```netflix_1```
+
+Password
+
+```password```
+
 # Important Note
 
 ## For local dev make sure to install an Extension to bypass the CORS Block!
